@@ -76,7 +76,15 @@ namespace Winori
         
         private void moveWindow(int x, int y)
         {
-            MoveWindow(GetForegroundWindow(), x, y, hw, hh, true);
+            IntPtr handle = GetForegroundWindow();
+            Rectangle screen = Screen.FromHandle(handle).WorkingArea;
+            hw = screen.Width / 2;
+            hh = screen.Height / 2;
+            if (!Screen.FromHandle(handle).Primary)
+            {
+                x += Screen.PrimaryScreen.Bounds.Width;
+            }
+            MoveWindow(handle, x, y, hw, hh, true);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
