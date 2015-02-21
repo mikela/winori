@@ -1,4 +1,4 @@
-# winori
+# Winori
 Windows app to snap the selected window to any of the 4 corners of the screen.
 
 It works much like "Windows key + Left key" or "Windows key + Right key", which will make the selected window take the left or 
