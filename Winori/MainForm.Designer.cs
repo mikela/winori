@@ -52,6 +52,7 @@
             this.labelUR = new System.Windows.Forms.Label();
             this.buttonUR = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.labelDebug = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxCC)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -75,7 +76,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(107, 35);
             this.label1.TabIndex = 1;
-            this.label1.Text = "Winori v1.0.0.6 \r\nby Mikel Anabitarte";
+            this.label1.Text = "Winori v1.0.0.11 \r\nby Mikel Anabitarte";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // notifyIcon
@@ -262,6 +263,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.labelDebug);
             this.tabPage2.Controls.Add(this.label1);
             this.tabPage2.Controls.Add(this.pictureBoxCC);
             this.tabPage2.Controls.Add(this.label2);
@@ -272,6 +274,14 @@
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "License";
             this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // labelDebug
+            // 
+            this.labelDebug.Location = new System.Drawing.Point(3, 132);
+            this.labelDebug.Name = "labelDebug";
+            this.labelDebug.Size = new System.Drawing.Size(278, 34);
+            this.labelDebug.TabIndex = 5;
+            this.labelDebug.TextAlign = System.Drawing.ContentAlignment.TopCenter;
             // 
             // MainForm
             // 
@@ -325,6 +335,7 @@
         private System.Windows.Forms.Panel panelDL;
         private System.Windows.Forms.Label labelDL;
         private System.Windows.Forms.Button buttonDL;
+        private System.Windows.Forms.Label labelDebug;
     }
 }
 

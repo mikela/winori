@@ -21,11 +21,13 @@ namespace Winori
         internal static extern bool MoveWindow(IntPtr hWnd, int X, int Y, int nWidth, int nHeight, bool bRepaint);
         [DllImport("user32.dll")]
         private static extern IntPtr GetForegroundWindow();
+        [DllImport("user32.dll")]
+        public static extern bool GetCursorPos(out Point pt);
 
         private KeyboardHookListener m_KeyboardHookManager;
 
-        private int hw;
-        private int hh;
+        private int w;
+        private int h;
         
         private ISet<Keys> currentKeysDown = new HashSet<Keys>();
         private ISet<Keys> dlCombo;
@@ -49,8 +51,8 @@ namespace Winori
             m_KeyboardHookManager.KeyUp += m_KeyboardHookManager_KeyUp;
 
             Rectangle screen = Screen.FromControl(this).WorkingArea;
-            hw = screen.Width / 2;
-            hh = screen.Height / 2;
+            w = screen.Width / 2;
+            h = screen.Height / 2;
 
             initKeyCombos();
 
@@ -184,7 +186,7 @@ namespace Winori
             {
                 if (currentKeysDown.SetEquals(dlCombo))
                 {
-                    moveWindow(updateCoords(), 0, hh);
+                    moveWindow(updateCoords(), 0, h);
                 }
                 else if (currentKeysDown.SetEquals(ulCombo))
                 {
@@ -192,21 +194,33 @@ namespace Winori
                 }
                 else if (currentKeysDown.SetEquals(drCombo))
                 {
-                    moveWindow(updateCoords(), hw, hh);
+                    moveWindow(updateCoords(), w, h);
                 }
                 else if (currentKeysDown.SetEquals(urCombo))
                 {
-                    moveWindow(updateCoords(), hw, 0);
+                    moveWindow(updateCoords(), w, 0);
+                }
+            }
+            if (Keys.F5.Equals(e.KeyCode))
+            {
+                Point pt;
+                bool a = GetCursorPos(out pt);
+                String lbTxt = "Prim: " + Screen.FromHandle(updateCoords()).Primary + ", w: " + w + ", h: " + h + ", m: " + pt.ToString();
+                labelDebug.Text = lbTxt;
+                if (Screen.AllScreens.Length > 1)
+                {
+                    labelDebug.Text = lbTxt + ", s[1]b: " + Screen.AllScreens[1].Bounds;
                 }
             }
         }
+
 
         private IntPtr updateCoords()
         {
             IntPtr handle = GetForegroundWindow();
             Rectangle screen = Screen.FromHandle(handle).WorkingArea;
-            hw = screen.Width / 2;
-            hh = screen.Height / 2;
+            w = screen.Width / 2;
+            h = screen.Height / 2;
             return handle;
         }
 
@@ -221,12 +235,12 @@ namespace Winori
         }
 
         private void moveWindow(IntPtr handle, int posX, int posY)
-        {
-            if (!Screen.FromHandle(handle).Primary)
+        {            
+            if (!Screen.FromHandle(handle).Primary && Screen.AllScreens.Length > 1)
             {
-                posX += Screen.PrimaryScreen.Bounds.Width;
+                posX += Screen.AllScreens[1].Bounds.X;
             }
-            MoveWindow(handle, posX, posY, hw, hh, true);
+            MoveWindow(handle, posX, posY, w, h, true);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
