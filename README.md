@@ -6,10 +6,10 @@ right half of the screen. This app does the same thing but dividing the space in
 
 
 The keyboard shortcuts are configurable. By default, they are:
-- "Win key + NumPad7": Move window to the top left portion of the screen.
-- "Win key + NumPad9": Top right.
-- "Win key + NumPad1": Bottom left.
-- "Win key + NumPad3": Bottom right.
+- "LControlKey + Insert": Move window to the top left portion of the screen.
+- "LControlKey + Home": Top right.
+- "LControlKey + Delete": Bottom left.
+- "LControlKey + End": Bottom right.
 
 Released under (CC BY-SA 4.0). Use at your own risk.
 
