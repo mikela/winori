@@ -64,8 +64,8 @@ namespace Winori
             if (ulCombo == null)
             {
                 ulCombo = new HashSet<Keys>();
-                ulCombo.Add(Keys.LWin);
-                ulCombo.Add(Keys.NumPad7);
+                ulCombo.Add(Keys.LControlKey);
+                ulCombo.Add(Keys.Insert);
                 Properties.Settings.Default.ulComboSetting = new HashSet<Keys>();
             }
 
@@ -73,8 +73,8 @@ namespace Winori
             if (dlCombo == null)
             {
                 dlCombo = new HashSet<Keys>();
-                dlCombo.Add(Keys.LWin);
-                dlCombo.Add(Keys.NumPad1);
+                dlCombo.Add(Keys.LControlKey);
+                dlCombo.Add(Keys.Delete);
                 Properties.Settings.Default.dlComboSetting = new HashSet<Keys>();
             }
 
@@ -82,8 +82,8 @@ namespace Winori
             if (drCombo == null)
             {
                 drCombo = new HashSet<Keys>();
-                drCombo.Add(Keys.LWin);
-                drCombo.Add(Keys.NumPad3);
+                drCombo.Add(Keys.LControlKey);
+                drCombo.Add(Keys.End);
                 Properties.Settings.Default.drComboSetting = new HashSet<Keys>();
             }
 
@@ -91,8 +91,8 @@ namespace Winori
             if (urCombo == null)
             {
                 urCombo = new HashSet<Keys>();
-                urCombo.Add(Keys.LWin);
-                urCombo.Add(Keys.NumPad9);
+                urCombo.Add(Keys.LControlKey);
+                urCombo.Add(Keys.Home);
                 Properties.Settings.Default.urComboSetting = new HashSet<Keys>();
             }
 
@@ -163,6 +163,7 @@ namespace Winori
                 dest.Add(item);
             }
         }
+
         private void saveSet(ISet<Keys> source, ISet<Keys> dest, ISet<Keys> setting)
         {
             dest.Clear();
@@ -183,21 +184,30 @@ namespace Winori
             {
                 if (currentKeysDown.SetEquals(dlCombo))
                 {
-                    moveWindow(0, hh);
+                    moveWindow(updateCoords(), 0, hh);
                 }
                 else if (currentKeysDown.SetEquals(ulCombo))
                 {
-                    moveWindow(0, 0);
+                    moveWindow(updateCoords(), 0, 0);
                 }
                 else if (currentKeysDown.SetEquals(drCombo))
                 {
-                    moveWindow(hw, hh);
+                    moveWindow(updateCoords(), hw, hh);
                 }
                 else if (currentKeysDown.SetEquals(urCombo))
                 {
-                    moveWindow(hw, 0);
+                    moveWindow(updateCoords(), hw, 0);
                 }
             }
+        }
+
+        private IntPtr updateCoords()
+        {
+            IntPtr handle = GetForegroundWindow();
+            Rectangle screen = Screen.FromHandle(handle).WorkingArea;
+            hw = screen.Width / 2;
+            hh = screen.Height / 2;
+            return handle;
         }
 
         private void printKeysDown()
@@ -209,18 +219,14 @@ namespace Winori
             }
             labelUL.Text = combo;
         }
-                
-        private void moveWindow(int x, int y)
+
+        private void moveWindow(IntPtr handle, int posX, int posY)
         {
-            IntPtr handle = GetForegroundWindow();
-            Rectangle screen = Screen.FromHandle(handle).WorkingArea;
-            hw = screen.Width / 2;
-            hh = screen.Height / 2;
             if (!Screen.FromHandle(handle).Primary)
             {
-                x += Screen.PrimaryScreen.Bounds.Width;
+                posX += Screen.PrimaryScreen.Bounds.Width;
             }
-            MoveWindow(handle, x, y, hw, hh, true);
+            MoveWindow(handle, posX, posY, hw, hh, true);
         }
 
         private void MainForm_Resize(object sender, EventArgs e)
